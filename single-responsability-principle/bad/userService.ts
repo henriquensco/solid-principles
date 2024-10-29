@@ -1,12 +1,19 @@
 import { CreateUserDto } from "./createUserDto";
+import { UserRepository } from "./userRepository";
 
 class UserService {
+  constructor(
+    private userRepository: UserRepository = new UserRepository()
+  ){}
+
   createUser(createUserDto: CreateUserDto): CreateUserDto {
     this.validateEmail(createUserDto.email);
     
     this.validateDocument(createUserDto.document);
 
     this.validatePassword(createUserDto.password);
+
+    this.userRepository.create(createUserDto);
 
     this.notify(createUserDto.email);
 
